@@ -9,7 +9,7 @@ const Index = () => {
   const [score, setScore] = useState(0);
   const [totalQuestions, setTotalQuestions] = useState(0);
   const [monsterMood, setMonsterMood] = useState<
-    "neutral" | "happy" | "angry" | "thinking"
+    "neutral" | "happy" | "angry" | "thinking" | "screaming"
   >("neutral");
   const [isAsking, setIsAsking] = useState(false);
   const [usedQuestionIndices, setUsedQuestionIndices] = useState<number[]>([]);
@@ -67,6 +67,14 @@ const Index = () => {
     setIsAsking(false);
   };
 
+  const handleScream = () => {
+    setMonsterMood("screaming");
+    // Return to previous mood after 3 seconds
+    setTimeout(() => {
+      setMonsterMood("neutral");
+    }, 3000);
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-purple-900 to-black text-white">
       {/* Фоновые эффекты */}
@@ -85,7 +93,11 @@ const Index = () => {
         </div>
 
         <div className="max-w-2xl mx-auto space-y-8">
-          <MonsterCharacter mood={monsterMood} isAsking={isAsking} />
+          <MonsterCharacter
+            mood={monsterMood}
+            isAsking={isAsking}
+            onScream={gameStarted ? handleScream : undefined}
+          />
 
           {!gameStarted ? (
             <div className="text-center">
@@ -108,7 +120,15 @@ const Index = () => {
                 />
               )}
 
-              <div className="text-center">
+              <div className="text-center space-x-4">
+                <button
+                  onClick={handleScream}
+                  className="bg-red-600 hover:bg-red-500 text-white font-bold py-3 px-6 rounded-lg 
+                           transition-all duration-300 hover:scale-105 text-lg
+                           border-2 border-red-400 shadow-lg"
+                >
+                  😱 Крик
+                </button>
                 <button
                   onClick={resetGame}
                   className="bg-gray-600 hover:bg-gray-500 text-white font-medium py-2 px-4 rounded-lg 
